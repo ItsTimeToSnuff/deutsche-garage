@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".ui.part.PartActivity">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+                name="viewModel"
+                type="ua.com.d_garage.deutschegarage.ui.part.description.DescriptionViewModel"/>
+
+    </data>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background"
+                android:orientation="vertical">
+
+            <include
+                    layout="@layout/top_action_bar_in_description_fragment"
+                    android:id="@+id/btn_exit"
+                    app:viewModel="@{viewModel}"
+                    android:elevation="@dimen/layout_elevation"/>
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/part_description_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/container_margin"
+                        android:elevation="@dimen/layout_elevation"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/description_field_view"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="?android:progressBarStyleLarge"
+                android:visibility="@{viewModel.isLoading?View.VISIBLE:View.INVISIBLE}"/>
+
+    </FrameLayout>
+
+</layout>

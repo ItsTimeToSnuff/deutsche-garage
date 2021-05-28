@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.part.PartActivity">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+                name="viewModel"
+                type="ua.com.d_garage.deutschegarage.ui.part.barcode.BarcodeViewModel"/>
+    </data>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_action_bar_height"
+            android:paddingStart="@dimen/top_action_bar_padding_horizontal"
+            android:paddingEnd="@dimen/top_action_bar_padding_horizontal"
+            android:background="@drawable/top_action_bar_bg">
+
+        <ImageView
+                android:id="@+id/btn_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:padding="@dimen/top_action_button_padding"
+                android:src="@drawable/ic_close"
+                android:background="@drawable/ripple_action_bar_btn"
+                android:onClick="@{()->viewModel.close()}"
+                android:contentDescription="@string/app_name"/>
+
+        <ImageView
+                android:id="@+id/btn_flash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:padding="@dimen/top_action_button_padding"
+                android:src="@drawable/camera_flash"
+                android:background="@drawable/ripple_action_bar_btn"
+                android:onClick="@{()->viewModel.flashOnOff()}"
+                android:contentDescription="@string/app_name"/>
+
+    </RelativeLayout>
+
+</layout>

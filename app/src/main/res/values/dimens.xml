@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="top_action_bar_height">64dp</dimen>
+    <dimen name="top_action_bar_padding_horizontal">8dp</dimen>
+    <dimen name="top_action_button_padding">12dp</dimen>
+    <dimen name="main_activity_title_size">32sp</dimen>
+    <dimen name="container_margin">8dp</dimen>
+    <dimen name="container_padding">8dp</dimen>
+    <dimen name="barcode_button_height">180dp</dimen>
+    <dimen name="barcode_button_width">112dp</dimen>
+    <dimen name="layout_elevation">5dp</dimen>
+    <dimen name="description_field_elevation">2dp</dimen>
+    <dimen name="corners_radius">4dp</dimen>
+    <dimen name="stroke_width">2dp</dimen>
+    <dimen name="description_field_text_size">20sp</dimen>
+    <dimen name="loading_size">100dp</dimen>
+    <dimen name="barcode_scan_box_stroke_width">4dp</dimen>
+    <dimen name="barcode_scan_box_corner_radius">8dp</dimen>
+    <dimen name="description_field_margin">2dp</dimen>
+    <dimen name="barcode_scanning_size_offset">50dp</dimen>
+</resources>
