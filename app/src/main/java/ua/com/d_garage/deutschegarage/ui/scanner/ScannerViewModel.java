@@ -1,4 +1,4 @@
-package ua.com.d_garage.deutschegarage.ui.part.barcode;
+package ua.com.d_garage.deutschegarage.ui.scanner;
 
 import android.app.Application;
 import androidx.camera.core.Camera;
@@ -11,7 +11,9 @@ import ua.com.d_garage.deutschegarage.data.service.barcode.BarcodeCameraService;
 import ua.com.d_garage.deutschegarage.data.service.camera.CameraService;
 import ua.com.d_garage.deutschegarage.ui.base.BaseViewModel;
 
-public class BarcodeViewModel extends BaseViewModel<BarcodeNavigator> {
+public class ScannerViewModel extends BaseViewModel<ScannerNavigator> {
+
+    private static final String TAG = ScannerViewModel.class.getSimpleName();
 
     private final MediatorLiveData<Camera> camera;
     private final MediatorLiveData<Boolean> isFlashOn;
@@ -19,7 +21,7 @@ public class BarcodeViewModel extends BaseViewModel<BarcodeNavigator> {
     private CameraService<Long> cameraService;
     private MediatorLiveData<Long> result;
 
-    public BarcodeViewModel(Application application) {
+    public ScannerViewModel(Application application) {
         super(application);
         camera = new MediatorLiveData<>();
         isFlashOn = new MediatorLiveData<>();

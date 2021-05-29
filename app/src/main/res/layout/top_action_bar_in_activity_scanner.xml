@@ -2,7 +2,7 @@
 <layout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".ui.part.PartActivity">
+        tools:context=".ui.scanner.ScannerActivity">
 
     <data>
 
@@ -10,7 +10,7 @@
 
         <variable
                 name="viewModel"
-                type="ua.com.d_garage.deutschegarage.ui.part.barcode.BarcodeViewModel"/>
+                type="ua.com.d_garage.deutschegarage.ui.scanner.ScannerViewModel"/>
     </data>
 
     <RelativeLayout

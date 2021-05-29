@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">Deutsche Garage</string>
     <string name="back_pressed_text">Нажмите НАЗАД еще раз чтобы выйти!</string>
-    <string name="internal_server_error">Internal server error!</string>
-    <string name="part_not_found">Не удалось найти деталь.\nПопробуйте пересканировать.</string>
-    <string name="description_fragment_title">Описание</string>
     <string name="permissions_denied_message">Для работы приложения необходимы разрешения!</string>
     <string name="enable_internet">Для поиска штрихкода включите интернет!</string>
 </resources>

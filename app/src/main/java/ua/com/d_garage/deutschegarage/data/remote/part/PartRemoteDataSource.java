@@ -42,7 +42,7 @@ public class PartRemoteDataSource {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 bmwPartDescription.postValue(null);
-                Log.e(TAG, "Failed to load bmw part description.", e);
+                Log.e(TAG, "Failed to load bmw scanner description.", e);
             }
 
             @Override

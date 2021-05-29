@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
         <include
-                layout="@layout/top_action_bar_in_main_activity"
+                layout="@layout/top_action_bar_in_activity_main"
                 android:id="@+id/btn_exit"
                 app:viewModel="@{viewModel}"
                 android:elevation="@dimen/layout_elevation"/>

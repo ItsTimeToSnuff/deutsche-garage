@@ -43,7 +43,7 @@
                 android:screenOrientation="portrait"/>
 
         <activity
-                android:name=".ui.part.PartActivity"
+                android:name=".ui.scanner.ScannerActivity"
                 android:screenOrientation="portrait"/>
 
     </application>

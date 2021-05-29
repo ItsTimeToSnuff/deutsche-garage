@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".ui.part.PartActivity">
+        tools:context=".ui.scanner.ScannerActivity">
 
     <data>
 
@@ -11,7 +11,7 @@
 
         <variable
                 name="viewModel"
-                type="ua.com.d_garage.deutschegarage.ui.part.barcode.BarcodeViewModel"/>
+                type="ua.com.d_garage.deutschegarage.ui.scanner.ScannerViewModel"/>
 
     </data>
 
@@ -33,7 +33,7 @@
                 android:layout_height="match_parent"/>
 
         <include
-                layout="@layout/top_action_bar_in_barcode_fragment"
+                layout="@layout/top_action_bar_in_activity_scanner"
                 android:id="@+id/barcode_action_bar"
                 app:viewModel="@{viewModel}"
                 android:elevation="@dimen/layout_elevation"/>

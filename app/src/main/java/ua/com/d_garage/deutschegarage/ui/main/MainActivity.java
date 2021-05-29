@@ -6,7 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import ua.com.d_garage.deutschegarage.R;
 import ua.com.d_garage.deutschegarage.databinding.ActivityMainBinding;
-import ua.com.d_garage.deutschegarage.ui.part.PartActivity;
+import ua.com.d_garage.deutschegarage.ui.scanner.ScannerActivity;
 import ua.com.d_garage.deutschegarage.ui.base.BaseActivity;
 
 import java.util.Timer;
@@ -31,7 +31,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public void openBarcodeActivity() {
-        startActivity(new Intent(this, PartActivity.class));
+        startActivity(new Intent(this, ScannerActivity.class));
     }
 
     @Override
