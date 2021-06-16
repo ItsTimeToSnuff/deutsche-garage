@@ -4,5 +4,5 @@ public interface MainNavigator {
 
     void openBarcodeActivity();
 
-    void exit();
+    void openNotesActivity();
 }

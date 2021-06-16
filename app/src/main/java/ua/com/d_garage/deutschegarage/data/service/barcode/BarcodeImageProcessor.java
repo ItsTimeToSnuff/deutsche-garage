@@ -54,7 +54,7 @@ public class BarcodeImageProcessor extends BaseImageProcessor<List<Barcode>, Lon
         Bitmap bitmap = Bitmap.createBitmap(
                 tmpBitmap,
                 tmpBitmap.getWidth() / 2 - analyze.getWidth() / 2,
-                tmpBitmap.getHeight() / 2 - analyze.getHeight()/ 2,
+                tmpBitmap.getHeight() / 2 - analyze.getHeight() / 2,
                 analyze.getWidth(),
                 analyze.getHeight()
         );

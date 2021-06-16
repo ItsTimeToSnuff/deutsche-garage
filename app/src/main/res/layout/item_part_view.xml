@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+
+    <data>
+
+        <variable
+                name="part"
+                type="ua.com.d_garage.deutschegarage.data.model.part.Part"
+                />
+
+        <variable
+                name="partNumber"
+                type="String"
+                />
+
+        <variable
+                name="partCount"
+                type="String"
+                />
+
+    </data>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/cardview_default_elevation"
+                android:layout_marginTop="@dimen/item_view_margin"
+                android:layout_marginLeft="@dimen/item_view_margin"
+                android:layout_marginRight="@dimen/item_view_margin"
+                android:background="@color/white"
+                app:cardCornerRadius="@dimen/corners_radius"
+                >
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/container_padding_vertical"
+                    android:paddingBottom="@dimen/container_padding_vertical"
+                    android:paddingStart="@dimen/container_padding_horizontal"
+                    android:paddingEnd="@dimen/container_padding_horizontal"
+                    >
+
+                <TextView
+                        android:id="@+id/part_number"
+                        android:layout_width="@dimen/item_view_count_size"
+                        android:layout_height="@dimen/item_view_count_size"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        style="@style/TextStyle.Title"
+                        android:textSize="@dimen/item_view_count"
+                        android:text="@{partNumber}"
+                        />
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="@dimen/container_padding_vertical"
+                        android:paddingBottom="@dimen/container_padding_vertical"
+                        >
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            style="@style/TextStyle.FieldName"
+                            android:textSize="@dimen/item_view_name"
+                            android:text="@string/part_vin_name"
+                            />
+
+                    <TextView
+                            android:id="@+id/part_vin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            style="@style/TextStyle"
+                            android:textSize="@dimen/item_view_value"
+                            android:text="@{String.valueOf(part.vin)}"
+                            />
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            style="@style/TextStyle.FieldName"
+                            android:textSize="@dimen/item_view_name"
+                            android:text="@string/part_name"
+                            />
+
+                    <TextView
+                            android:id="@+id/part_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            style="@style/TextStyle"
+                            android:textSize="@dimen/item_view_value"
+                            android:text="@{part.name}"
+                            />
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            style="@style/TextStyle.FieldName"
+                            android:textSize="@dimen/item_view_name"
+                            android:text="@string/part_count"
+                            />
+
+                    <TextView
+                            android:id="@+id/part_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            style="@style/TextStyle"
+                            android:textSize="@dimen/item_view_value"
+                            android:text="@{partCount}"
+                            />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</layout>

@@ -35,7 +35,7 @@ public class LoadingActivity extends AppCompatActivity {
                 finish();
             }
         };
-        new Timer().schedule(timerTask, 1000);
+        new Timer().schedule(timerTask, 700);
     }
 
 }

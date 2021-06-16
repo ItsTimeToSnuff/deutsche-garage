@@ -5,7 +5,7 @@ import ua.com.d_garage.deutschegarage.ui.base.BaseViewModel;
 
 public class MainViewModel extends BaseViewModel<MainNavigator> {
 
-    public static final String TAG = MainViewModel.class.getSimpleName();
+    private static final String TAG = MainViewModel.class.getSimpleName();
 
     public MainViewModel(Application application) {
         super(application);
@@ -15,7 +15,7 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
         getNavigator().openBarcodeActivity();
     }
 
-    public void onExitPressed() {
-        getNavigator().exit();
+    public void onNotesActivityPressed() {
+        getNavigator().openNotesActivity();
     }
 }

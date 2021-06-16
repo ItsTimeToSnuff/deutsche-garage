@@ -5,8 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class BarcodeSizePair {
 
-    private static final float WIDTH_SCALE = 0.75F;
-    private static final float HEIGHT_SCALE = 0.15F;
+    private static final float WIDTH_SCALE = 0.85F;
+    private static final float HEIGHT_SCALE = 0.20F;
 
     private final Size previewSize;
     private final Size analyzeSize;

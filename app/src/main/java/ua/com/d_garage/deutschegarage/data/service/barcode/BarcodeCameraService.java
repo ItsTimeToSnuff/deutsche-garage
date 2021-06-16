@@ -2,7 +2,7 @@ package ua.com.d_garage.deutschegarage.data.service.barcode;
 
 import android.app.Application;
 import android.util.Log;
-import android.util.Size;
+import androidx.camera.core.AspectRatio;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.Preview;
 import androidx.camera.core.UseCase;
@@ -18,15 +18,18 @@ import java.util.concurrent.Executors;
 public class BarcodeCameraService extends BaseCameraService<Long> {
 
     private static final String TAG = BarcodeCameraService.class.getSimpleName();
+    private static final double RATIO_4_3_VALUE = 4.0 / 3.0;
+    private static final double RATIO_16_9_VALUE = 16.0 / 9.0;
+
+    private final BarcodeSizePair sizePair;
+    private final int aspectRatio;
 
     private ImageProcessor<Long> imageProcessor;
-    private final BarcodeSizePair sizePair;
-    private final Size targetResolution;
 
     public BarcodeCameraService(Application application, LifecycleOwner lifecycleOwner, Preview.SurfaceProvider surfaceProvider, BarcodeSizePair sizePair) {
         super(application, lifecycleOwner, surfaceProvider);
         this.sizePair = sizePair;
-        targetResolution = new Size(sizePair.getPreviewSize().getHeight(), sizePair.getPreviewSize().getWidth());
+        aspectRatio = getAspectRatio(sizePair.getPreviewSize().getWidth(), sizePair.getPreviewSize().getHeight());
     }
 
     @Override
@@ -47,7 +50,7 @@ public class BarcodeCameraService extends BaseCameraService<Long> {
 
     private Preview initPreviewUseCase() {
         Preview.Builder builder = new Preview.Builder();
-        builder.setTargetResolution(targetResolution);
+        builder.setTargetAspectRatio(aspectRatio);
         Preview preview = builder.build();
         preview.setSurfaceProvider(surfaceProviderWeakReference.get());
         return preview;
@@ -60,7 +63,7 @@ public class BarcodeCameraService extends BaseCameraService<Long> {
         ShutdownExecutor shutdownExecutor = new ShutdownExecutor(Executors.newCachedThreadPool());
         imageProcessor = new BarcodeImageProcessor(shutdownExecutor, sizePair);
         ImageAnalysis.Builder builder = new ImageAnalysis.Builder();
-        builder.setTargetResolution(targetResolution);
+        builder.setTargetAspectRatio(aspectRatio);
         ImageAnalysis imageAnalysis = builder.build();
         imageAnalysis.setAnalyzer(
                 shutdownExecutor,
@@ -72,6 +75,14 @@ public class BarcodeCameraService extends BaseCameraService<Long> {
                     }
                 });
         return imageAnalysis;
+    }
+
+    private int getAspectRatio(int width, int height) {
+        double previewRatio = (double) Math.max(width, height) / Math.min(width, height);
+        if (Math.abs(previewRatio - RATIO_4_3_VALUE) <= Math.abs(previewRatio - RATIO_16_9_VALUE)) {
+            return AspectRatio.RATIO_4_3;
+        }
+        return AspectRatio.RATIO_16_9;
     }
 
 }

@@ -3,4 +3,24 @@
     <string name="back_pressed_text">Нажмите НАЗАД еще раз чтобы выйти!</string>
     <string name="permissions_denied_message">Для работы приложения необходимы разрешения!</string>
     <string name="enable_internet">Для поиска штрихкода включите интернет!</string>
+    <string name="note_creation_title">Начать запись</string>
+    <string name="note_creation_name">Название</string>
+    <string name="note_creation_start">Начать</string>
+    <string name="note_creation_cancel">Отмена</string>
+    <string name="btn_note">Запись/стоп</string>
+    <string name="btn_flash">Вспышка</string>
+    <string name="note_default_number">0</string>
+    <string name="note_default_date">01.04.1488</string>
+    <string name="note_default_title">Test note title.......</string>
+    <string name="notes_fragment_title">Записи</string>
+    <string name="part_default_name">Engine</string>
+    <string name="part_default_vin">12347564235</string>
+    <string name="part_vin_name">VIN:</string>
+    <string name="part_name">Название:</string>
+    <string name="part_count">Количество:</string>
+    <string name="part_default_count">4</string>
+    <string name="empty_field_error">Поле не должно быть пустым!</string>
+    <string name="default_font" translatable="false">sans-serif</string>
+    <string name="btn_delete_note">Удалить запись</string>
+    <string name="btn_share_note">Отправить запись</string>
 </resources>

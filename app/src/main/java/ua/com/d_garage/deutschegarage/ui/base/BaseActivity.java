@@ -16,9 +16,8 @@ import java.lang.reflect.ParameterizedType;
 public abstract class BaseActivity<DB extends ViewDataBinding, VM extends ViewModel>
         extends AppCompatActivity implements BaseFragment.Callback {
 
+    protected DB binding;
     protected VM viewModel;
-
-    private DB viewDataBinding;
 
     @LayoutRes
     public abstract int getLayoutId();
@@ -31,9 +30,9 @@ public abstract class BaseActivity<DB extends ViewDataBinding, VM extends ViewMo
         assert parameterizedType != null;
         Class<VM> viewModelClass = (Class<VM>)parameterizedType.getActualTypeArguments()[1];
         viewModel = new ViewModelProvider(this).get(viewModelClass);
-        viewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
-        viewDataBinding.setVariable(BR.viewModel, viewModel);
-        viewDataBinding.executePendingBindings();
+        binding = DataBindingUtil.setContentView(this, getLayoutId());
+        binding.setVariable(BR.viewModel, viewModel);
+        binding.executePendingBindings();
     }
 
     @Override
@@ -44,10 +43,6 @@ public abstract class BaseActivity<DB extends ViewDataBinding, VM extends ViewMo
     @Override
     public void onFragmentDetached(String tag) {
 
-    }
-
-    public DB getViewDataBinding() {
-        return viewDataBinding;
     }
 
     public boolean isNetworkConnected() {

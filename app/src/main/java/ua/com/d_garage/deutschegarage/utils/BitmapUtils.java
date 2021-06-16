@@ -38,7 +38,6 @@ public final class BitmapUtils {
             yuvImage.compressToJpeg(new Rect(0, 0, yuvImage.getWidth(), yuvImage.getHeight()), 85, out);
 
             byte[] imageBytes = out.toByteArray();
-            out.close();
 
             Bitmap tmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
 

@@ -2,10 +2,56 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="colorControlHighlight">@color/white</item>
+        <item name="fontFamily">@string/default_font</item>
+    </style>
+
+    <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+    </style>
+
+    <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextStyle">
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextStyle.Title" parent="TextStyle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextStyle.FieldName" parent="TextStyle">
+        <item name="android:textColor">@color/text_hint</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ContainerStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingTop">@dimen/container_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/container_padding_vertical</item>
+        <item name="android:paddingStart">@dimen/container_padding_horizontal</item>
+        <item name="android:paddingEnd">@dimen/container_padding_horizontal</item>
+        <item name="background">@color/background</item>
+    </style>
+
+    <style name="MainMenuButtonStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">@dimen/main_menu_button_padding</item>
+        <item name="android:layout_margin">@dimen/main_menu_button_margin</item>
     </style>
 
 </resources>

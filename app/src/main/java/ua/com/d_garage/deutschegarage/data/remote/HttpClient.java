@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 public final class HttpClient {
 
-    private static final long CONNECTION_TIMEOUT = 5;
+    private static final long CONNECTION_TIMEOUT = 10;
 
     private static OkHttpClient client;
 

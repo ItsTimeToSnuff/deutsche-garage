@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+
+    <data>
+
+        <variable
+                name="note"
+                type="ua.com.d_garage.deutschegarage.data.model.note.Note"
+                />
+
+        <variable
+                name="noteNumber"
+                type="String"
+                />
+
+        <variable
+                name="viewModel"
+                type="ua.com.d_garage.deutschegarage.ui.note.notes.NotesViewModel"
+                />
+
+    </data>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/cardview_default_elevation"
+                android:layout_marginTop="@dimen/item_view_margin"
+                android:layout_marginLeft="@dimen/item_view_margin"
+                android:layout_marginRight="@dimen/item_view_margin"
+                android:foreground="@drawable/ripple_item"
+                android:background="@color/white"
+                android:onClick="@{()->viewModel.onItemClicked(note.id)}"
+                app:cardCornerRadius="@dimen/corners_radius"
+                >
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/container_padding_vertical"
+                    android:paddingBottom="@dimen/container_padding_vertical"
+                    android:paddingStart="@dimen/container_padding_horizontal"
+                    android:paddingEnd="@dimen/container_padding_horizontal"
+                    >
+
+                <TextView
+                        android:layout_width="@dimen/item_view_count_size"
+                        android:layout_height="@dimen/item_view_count_size"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        style="@style/TextStyle.Title"
+                        android:textSize="@dimen/item_view_count"
+                        android:text="@{noteNumber}"
+                        />
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="@dimen/container_padding_vertical"
+                        android:paddingBottom="@dimen/container_padding_vertical"
+                        >
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|end"
+                            android:layout_margin="5dp"
+                            style="@style/TextStyle.FieldName"
+                            android:textSize="@dimen/item_view_name"
+                            android:text="@{note.date.toLocalDate().toString()}"
+                            />
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:layout_margin="5dp"
+                            style="@style/TextStyle"
+                            android:textSize="@dimen/item_view_value"
+                            android:text="@{note.title}"
+                            />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</layout>

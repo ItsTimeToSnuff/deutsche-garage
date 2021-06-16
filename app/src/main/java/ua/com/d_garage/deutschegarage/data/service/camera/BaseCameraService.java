@@ -20,7 +20,8 @@ public abstract class BaseCameraService<RES> implements CameraService<RES> {
 
     private static final String TAG = BaseCameraService.class.getSimpleName();
 
-    protected MutableLiveData<RES> observableResult;
+    protected final MutableLiveData<RES> observableResult;
+
     protected WeakReference<Preview.SurfaceProvider> surfaceProviderWeakReference;
 
     private final MutableLiveData<Camera> camera;
@@ -69,7 +70,6 @@ public abstract class BaseCameraService<RES> implements CameraService<RES> {
     public void rebindUseCases(LifecycleOwner lifecycleOwner, Preview.SurfaceProvider surfaceProvider) {
         lifecycleOwnerWeakReference = new WeakReference<>(lifecycleOwner);
         surfaceProviderWeakReference = new WeakReference<>(surfaceProvider);
-        observableResult = new MutableLiveData<>();
         rebindUseCases();
     }
 

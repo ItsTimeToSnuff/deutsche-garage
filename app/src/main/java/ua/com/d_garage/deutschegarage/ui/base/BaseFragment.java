@@ -19,10 +19,9 @@ import java.lang.reflect.ParameterizedType;
 
 public abstract class BaseFragment<DB extends ViewDataBinding, VM extends ViewModel, A extends BaseActivity<? extends ViewDataBinding, ? extends ViewModel>> extends Fragment {
 
+    protected DB binding;
     protected VM viewModel;
-
-    private A baseActivity;
-    private DB viewDataBinding;
+    protected A baseActivity;
 
     public interface Callback {
 
@@ -61,23 +60,16 @@ public abstract class BaseFragment<DB extends ViewDataBinding, VM extends ViewMo
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        viewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
-        return viewDataBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewDataBinding.setVariable(BR.viewModel, viewModel);
-        viewDataBinding.setLifecycleOwner(this);
-        viewDataBinding.executePendingBindings();
+        binding.setVariable(BR.viewModel, viewModel);
+        binding.setLifecycleOwner(this);
+        binding.executePendingBindings();
     }
 
-    public A getBaseActivity() {
-        return baseActivity;
-    }
-
-    public DB getViewDataBinding() {
-        return viewDataBinding;
-    }
 }

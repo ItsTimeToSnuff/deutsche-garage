@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import ua.com.d_garage.deutschegarage.R;
 import ua.com.d_garage.deutschegarage.databinding.ActivityMainBinding;
+import ua.com.d_garage.deutschegarage.ui.note.NoteActivity;
 import ua.com.d_garage.deutschegarage.ui.scanner.ScannerActivity;
 import ua.com.d_garage.deutschegarage.ui.base.BaseActivity;
 
@@ -22,6 +23,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
+        setSupportActionBar(binding.mainMenuActionBar.mainMenuToolbar);
     }
 
     @Override
@@ -35,8 +37,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     }
 
     @Override
-    public void exit() {
-        finish();
+    public void openNotesActivity() {
+        startActivity(new Intent(this, NoteActivity.class));
     }
 
     @Override
