@@ -9,7 +9,7 @@ public final class InputTextBindingAdapter {
         throw new IllegalStateException();
     }
 
-    @BindingAdapter("app:errorText")
+    @BindingAdapter({"errorText"})
     public static void setErrorText(TextInputLayout view, String message) {
         view.setError(message);
     }

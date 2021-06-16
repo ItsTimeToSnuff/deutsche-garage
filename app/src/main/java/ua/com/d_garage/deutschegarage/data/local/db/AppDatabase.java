@@ -11,7 +11,7 @@ import ua.com.d_garage.deutschegarage.data.local.db.dao.PartDao;
 import ua.com.d_garage.deutschegarage.data.model.note.Note;
 import ua.com.d_garage.deutschegarage.data.model.part.Part;
 
-@Database(entities = {Note.class, Part.class}, version = 1)
+@Database(entities = {Note.class, Part.class}, version = 1, exportSchema = false)
 @TypeConverters(LocalDateTimeConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 

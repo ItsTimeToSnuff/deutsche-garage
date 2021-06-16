@@ -48,9 +48,9 @@ public class PartsAdapter extends RecyclerView.Adapter<PartsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Part part = parts.get(position);
-        holder.binding.setPartNumber(String.valueOf(position));
+        holder.binding.setPartNumberValue(String.valueOf(position));
         holder.binding.setPart(part);
-        holder.binding.setPartCount(String.valueOf(counts.get(part)));
+        holder.binding.setPartCountValue(String.valueOf(counts.get(part)));
     }
 
     @Override

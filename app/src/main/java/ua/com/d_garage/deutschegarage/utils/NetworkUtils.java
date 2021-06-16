@@ -12,6 +12,7 @@ public final class NetworkUtils {
         throw new UnsupportedOperationException();
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean isNetworkConnected(Context context) {
         if (context == null) {
             return false;
