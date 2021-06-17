@@ -31,4 +31,5 @@ to register the goods when a new product arrives at the warehouse.
   
 ## Screenshot
 
-<img alt="main menu" src="screenshot/1623959727427.jpg" width="216" height="480"/>
+<img alt="main menu" src="screenshot/1623959727427.jpg" width="216"/>  <img alt="notes menu" src="screenshot/1623959727425.jpg" width="216"/>  <img alt="note menu" src="screenshot/1623959727426.jpg" width="216"/>
+<img alt="scanner" src="screenshot/1623959727420.jpg" width="216"/>  <img alt="new record" src="screenshot/1623959727419.jpg" width="216"/>  <img alt="brower" src="screenshot/1623959727418.jpg" width="216"/>
