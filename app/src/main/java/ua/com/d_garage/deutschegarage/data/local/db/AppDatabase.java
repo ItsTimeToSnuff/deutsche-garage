@@ -73,7 +73,7 @@ public abstract class AppDatabase extends RoomDatabase {
             // Create db view to retrieve a NoteItem with full Part entity
             database.execSQL(
                     "CREATE VIEW `NoteItemWithPart` " +
-                            "AS SELECT Note.id AS noteId, Part.*, NoteItem.quantity " +
+                            "AS SELECT Note.id as noteId, Part.*, NoteItem.quantity " +
                             "FROM NoteItem " +
                             "INNER JOIN Note, Part " +
                             "WHERE noteId = Note.id AND partId = Part.id"
