@@ -23,4 +23,6 @@
     <string name="default_font" translatable="false">sans-serif</string>
     <string name="btn_delete_note">Удалить запись</string>
     <string name="btn_share_note">Отправить запись</string>
+    <string name="part_quantity_title">Укажите количество запчастей в посылке</string>
+    <string name="part_quantity_ok">Ок</string>
 </resources>

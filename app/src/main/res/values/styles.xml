@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="colorControlNormal">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/white</item>
         <item name="fontFamily">@string/default_font</item>
     </style>
@@ -21,10 +22,7 @@
     </style>
 
     <style name="TextStyle">
-        <item name="android:layout_marginTop">2dp</item>
-        <item name="android:layout_marginBottom">2dp</item>
-        <item name="android:layout_marginLeft">2dp</item>
-        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:layout_margin">@dimen/text_margin</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 

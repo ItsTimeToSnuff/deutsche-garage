@@ -37,5 +37,6 @@
     <dimen name="item_view_count">26sp</dimen>
     <dimen name="item_view_count_size">50dp</dimen>
     <dimen name="scrollbar_size">4dp</dimen>
+    <dimen name="text_margin">2dp</dimen>
 
 </resources>

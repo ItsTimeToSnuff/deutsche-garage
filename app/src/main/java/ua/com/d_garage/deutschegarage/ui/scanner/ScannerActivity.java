@@ -29,6 +29,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import ua.com.d_garage.deutschegarage.R;
 import ua.com.d_garage.deutschegarage.data.model.barcode.BarcodeSizePair;
 import ua.com.d_garage.deutschegarage.databinding.ActivityScannerBinding;
+import ua.com.d_garage.deutschegarage.ui.scanner.quantity.QuantityDialog;
 import ua.com.d_garage.deutschegarage.ui.scanner.record.StartRecordingDialog;
 import ua.com.d_garage.deutschegarage.ui.view.barcode.BarcodeScanBoxGraphic;
 import ua.com.d_garage.deutschegarage.ui.view.barcode.BarcodeScanningGraphic;
@@ -110,9 +111,9 @@ public class ScannerActivity extends BaseActivity<ActivityScannerBinding, Scanne
             viewModel.getSaveTitle().observe(this, t->{});
             viewModel.getNoteTitle().observe(this, t->binding.scannerActionBar.title.setText(t));
             binding.scannerActionBar.title.setSelected(true);
-            viewModel.getNoteId().observe(this, viewModel::startRecording);
+            viewModel.getNote().observe(this, note -> viewModel.startRecording(note.getId()));
             viewModel.getBarcodeResult().observe(this, this::openDescription);
-            viewModel.getPartLiveData().observe(this, viewModel::savePart);
+            viewModel.getPartLiveData().observe(this, p-> QuantityDialog.newInstance().show(getSupportFragmentManager()));
             toolbar.post(() ->{
                 viewModel.getIsRecording().observe(
                         this,
@@ -176,7 +177,7 @@ public class ScannerActivity extends BaseActivity<ActivityScannerBinding, Scanne
                                     barcode)
             );
         } else {
-            if (System.currentTimeMillis() - lastToastTime > 2_000) {
+            if (System.currentTimeMillis() - lastToastTime > TimeUnit.SECONDS.toMillis(2)) {
                 lastToastTime = System.currentTimeMillis();
                 Toast.makeText(this, R.string.enable_internet, Toast.LENGTH_SHORT).show();
             }
@@ -226,6 +227,10 @@ public class ScannerActivity extends BaseActivity<ActivityScannerBinding, Scanne
 
     public void startRecording(String noteTitle) {
         viewModel.saveNote(noteTitle);
+    }
+
+    public void saveNoteItem(int partQuantity) {
+        viewModel.saveNoteItem(partQuantity);
     }
 
     private void initScanner() {

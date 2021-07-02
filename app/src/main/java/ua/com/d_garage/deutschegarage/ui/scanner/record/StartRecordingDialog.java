@@ -2,7 +2,6 @@ package ua.com.d_garage.deutschegarage.ui.scanner.record;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
@@ -32,11 +31,6 @@ public class StartRecordingDialog extends BaseDialog<DialogNoteStartBinding, Sta
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

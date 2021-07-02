@@ -8,12 +8,10 @@ import ua.com.d_garage.deutschegarage.R;
 import ua.com.d_garage.deutschegarage.data.local.db.AppDatabase;
 import ua.com.d_garage.deutschegarage.data.local.prefs.AppPreferences;
 import ua.com.d_garage.deutschegarage.data.model.note.Note;
-import ua.com.d_garage.deutschegarage.data.model.note.NoteWithParts;
-import ua.com.d_garage.deutschegarage.data.model.part.Part;
+import ua.com.d_garage.deutschegarage.data.model.note.NoteWithNoteItems;
 import ua.com.d_garage.deutschegarage.data.repository.note.NoteRepository;
 import ua.com.d_garage.deutschegarage.ui.base.BaseViewModel;
 
-import java.util.Map;
 import java.util.concurrent.Executors;
 
 public class NoteViewModel extends BaseViewModel<NoteNavigator> {
@@ -21,7 +19,7 @@ public class NoteViewModel extends BaseViewModel<NoteNavigator> {
     private final AppPreferences prefs;
     private final NoteRepository noteRepository;
     private final MutableLiveData<Long> noteIdLiveData;
-    private final LiveData<NoteWithParts> noteWithPartsLiveData;
+    private final LiveData<NoteWithNoteItems> noteWithPartsLiveData;
 
     public NoteViewModel(Application application) {
         super(application);
@@ -31,7 +29,7 @@ public class NoteViewModel extends BaseViewModel<NoteNavigator> {
         noteWithPartsLiveData = Transformations.switchMap(noteIdLiveData, noteRepository::getDescription);
     }
 
-    public LiveData<NoteWithParts> getNoteWithPartsLiveData() {
+    public LiveData<NoteWithNoteItems> getNoteWithNoteItemsLiveData() {
         return noteWithPartsLiveData;
     }
 
@@ -40,9 +38,9 @@ public class NoteViewModel extends BaseViewModel<NoteNavigator> {
     }
 
     public void deleteNote() {
-        NoteWithParts noteWithParts = noteWithPartsLiveData.getValue();
-        if (noteWithParts != null) {
-            Note note = noteWithParts.getNote();
+        NoteWithNoteItems noteWithNoteItems = noteWithPartsLiveData.getValue();
+        if (noteWithNoteItems != null) {
+            Note note = noteWithNoteItems.getNote();
             noteRepository.delete(note);
             if (prefs.getNoteTitle().equals(note.getTitle())) {
                 prefs.saveIsRecording(false);
@@ -52,34 +50,34 @@ public class NoteViewModel extends BaseViewModel<NoteNavigator> {
         }
     }
 
-    public String getShareableNote(Map<Part, Long> counts) {
+    public String getShareableNote() {
         final StringBuilder sb = new StringBuilder();
-        NoteWithParts noteWithParts = noteWithPartsLiveData.getValue();
-        if (noteWithParts != null) {
+        NoteWithNoteItems noteWithNoteItems = noteWithPartsLiveData.getValue();
+        if (noteWithNoteItems != null) {
             sb.append("#########################");
             sb.append("\n");
             sb.append("## ");
-            sb.append(noteWithParts.getNote().getTitle());
+            sb.append(noteWithNoteItems.getNote().getTitle());
             sb.append("\n");
             sb.append("## ");
-            sb.append(noteWithParts.getNote().getDate().toLocalDate());
+            sb.append(noteWithNoteItems.getNote().getDate().toLocalDate());
             sb.append("\n");
             sb.append("#########################");
             sb.append("\n");
-            counts.forEach((part, count) -> {
+            noteWithNoteItems.getNoteItems().forEach((noteItemWithPart) -> {
                 sb.append("-------------------------------------------------------");
                 sb.append("\n");
                 sb.append(getApplication().getString(R.string.part_vin_name));
                 sb.append(" ");
-                sb.append(part.getVin());
+                sb.append(noteItemWithPart.getPart().getVin());
                 sb.append("\n");
                 sb.append(getApplication().getString(R.string.part_name));
                 sb.append(" ");
-                sb.append(part.getName());
+                sb.append(noteItemWithPart.getPart().getName());
                 sb.append("\n");
                 sb.append(getApplication().getString(R.string.part_count));
                 sb.append(" ");
-                sb.append(count);
+                sb.append(noteItemWithPart.getQuantity());
                 sb.append("\n");
             });
         }

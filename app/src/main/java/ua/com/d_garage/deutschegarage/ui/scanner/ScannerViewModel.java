@@ -12,8 +12,8 @@ import ua.com.d_garage.deutschegarage.data.local.db.AppDatabase;
 import ua.com.d_garage.deutschegarage.data.local.prefs.AppPreferences;
 import ua.com.d_garage.deutschegarage.data.model.barcode.BarcodeSizePair;
 import ua.com.d_garage.deutschegarage.data.model.note.Note;
+import ua.com.d_garage.deutschegarage.data.model.note.NoteItem;
 import ua.com.d_garage.deutschegarage.data.model.part.Part;
-import ua.com.d_garage.deutschegarage.data.model.part.PartRequestData;
 import ua.com.d_garage.deutschegarage.data.remote.HttpClient;
 import ua.com.d_garage.deutschegarage.data.remote.part.PartHtmlParser;
 import ua.com.d_garage.deutschegarage.data.remote.part.PartRemoteDataSource;
@@ -24,6 +24,7 @@ import ua.com.d_garage.deutschegarage.data.service.camera.CameraService;
 import ua.com.d_garage.deutschegarage.ui.base.BaseViewModel;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -40,9 +41,10 @@ public class ScannerViewModel extends BaseViewModel<ScannerNavigator> {
     private final MediatorLiveData<Long> result;
     private final MutableLiveData<String> saveTitle;
     private final MutableLiveData<String> noteTitle;
-    private final LiveData<Long> noteId;
+    private final LiveData<Note> note;
     private final MutableLiveData<Boolean> isRecording;
-    private final MediatorLiveData<Part> partLiveData;
+    private final MutableLiveData<Long> vinPartLiveData;
+    private final LiveData<Part> partLiveData;
 
     private CameraService<Long> cameraService;
 
@@ -51,7 +53,9 @@ public class ScannerViewModel extends BaseViewModel<ScannerNavigator> {
         prefs = AppPreferences.getInstance(application);
         AppDatabase database = AppDatabase.getInstance(application);
         ExecutorService executorService = Executors.newCachedThreadPool();
-        partRepository = new PartRepository(new PartRemoteDataSource(HttpClient.getClient()), new PartHtmlParser(executorService), executorService, database.getPartDao());
+        PartHtmlParser partHtmlParser = new PartHtmlParser(executorService);
+        PartRemoteDataSource partRemoteDataSource = new PartRemoteDataSource(HttpClient.getClient(), partHtmlParser);
+        partRepository = new PartRepository(executorService, partRemoteDataSource, database.getPartDao());
         cameraServiceLiveData = new MutableLiveData<>();
         camera = new MediatorLiveData<>();
         isFlashOn = new MediatorLiveData<>();
@@ -60,11 +64,11 @@ public class ScannerViewModel extends BaseViewModel<ScannerNavigator> {
         noteRepository = new NoteRepository(database.getNoteDao(), executorService);
         noteTitle = new MutableLiveData<>(prefs.getNoteTitle());
         saveTitle = new MutableLiveData<>();
-        noteId = Transformations.switchMap(saveTitle, title->noteRepository.save(new Note(0, title, LocalDateTime.now())));
+        note = Transformations.switchMap(saveTitle, title->noteRepository.save(new Note(null, title, LocalDateTime.now())));
         isRecording = new MutableLiveData<>(prefs.getIsRecording());
         result = new MediatorLiveData<>();
-        partLiveData = new MediatorLiveData<>();
-        partLiveData.addSource(partRepository.getPartLiveData(), partLiveData::setValue);
+        vinPartLiveData = new MutableLiveData<>();
+        partLiveData = Transformations.switchMap(vinPartLiveData, partRepository::getPart);
     }
 
     public void initOrResumeScanner(LifecycleOwner lifecycleOwner, Preview.SurfaceProvider surfaceProvider, BarcodeSizePair sizePair) {
@@ -77,7 +81,7 @@ public class ScannerViewModel extends BaseViewModel<ScannerNavigator> {
                 long id = prefs.getNoteId();
                 if (isRec != null && id != AppPreferences.NOTE_ID_DEFAULT) {
                     if (isRec) {
-                        partRepository.getPart(new PartRequestData(barcode, id));
+                        vinPartLiveData.setValue(barcode);
                     }
                 }
             });
@@ -88,15 +92,15 @@ public class ScannerViewModel extends BaseViewModel<ScannerNavigator> {
         }
     }
 
-    public void savePart(Part part) {
-        partRepository.save(part);
+    public void saveNoteItem(int partQuantity) {
+        noteRepository.save(new NoteItem(null, prefs.getNoteId(), Objects.requireNonNull(partLiveData.getValue()).getId(), partQuantity));
     }
 
     public void saveNote(String title) {
         saveTitle.setValue(title);
     }
 
-    public void startRecording(long id) {
+    public void startRecording(Long id) {
         setRecording(true, saveTitle.getValue(), id);
     }
 
@@ -145,8 +149,8 @@ public class ScannerViewModel extends BaseViewModel<ScannerNavigator> {
         return saveTitle;
     }
 
-    public LiveData<Long> getNoteId() {
-        return noteId;
+    public LiveData<Note> getNote() {
+        return note;
     }
 
     public LiveData<Boolean> getIsRecording() {

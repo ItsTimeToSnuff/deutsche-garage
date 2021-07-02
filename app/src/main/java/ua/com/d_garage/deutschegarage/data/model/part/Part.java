@@ -1,44 +1,30 @@
 package ua.com.d_garage.deutschegarage.data.model.part;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import org.jetbrains.annotations.NotNull;
-import ua.com.d_garage.deutschegarage.data.model.note.Note;
 
 import java.util.Objects;
 
-@Entity(foreignKeys = {
-        @ForeignKey(
-                entity = Note.class,
-                parentColumns = "id",
-                childColumns = "noteId",
-                onUpdate = ForeignKey.CASCADE,
-                onDelete = ForeignKey.CASCADE)
-})
+@Entity(indices = {@Index(value = {"vin"}, unique = true)})
 public class Part {
 
     @PrimaryKey(autoGenerate = true)
-    private final long id;
-    @ColumnInfo(index = true)
-    private final long noteId;
+    private final Long id;
+
     private final long vin;
+
     private final String name;
 
-    public Part(long id, long noteId, long vin, String name) {
+    public Part(Long id, long vin, String name) {
         this.id = id;
-        this.noteId = noteId;
         this.vin = vin;
         this.name = name;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
-    }
-
-    public long getNoteId() {
-        return noteId;
     }
 
     public long getVin() {
@@ -54,12 +40,12 @@ public class Part {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Part part = (Part) o;
-        return noteId == part.noteId && vin == part.vin;
+        return vin == part.vin && Objects.equals(id, part.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(noteId, vin);
+        return Objects.hash(id, vin);
     }
 
     @NotNull
@@ -67,10 +53,8 @@ public class Part {
     public String toString() {
         return "Part{" +
                 "id=" + id +
-                ", noteId=" + noteId +
                 ", vin=" + vin +
                 ", name='" + name + '\'' +
                 '}';
     }
-
 }

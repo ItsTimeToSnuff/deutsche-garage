@@ -38,11 +38,11 @@ public class NoteFragment extends BaseFragment<FragmentNoteDescriptionBinding, N
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel.getNoteWithPartsLiveData().observe(getViewLifecycleOwner(), noteWithParts -> {
-            adapter = new PartsAdapter(noteWithParts.getParts());
+        viewModel.getNoteWithNoteItemsLiveData().observe(getViewLifecycleOwner(), noteWithNoteItems -> {
+            adapter = new PartsAdapter(noteWithNoteItems.getNoteItems());
             binding.partsContainer.setAdapter(adapter);
             if (baseActivity.getSupportActionBar() != null) {
-                baseActivity.getSupportActionBar().setTitle(noteWithParts.getNote().getTitle());
+                baseActivity.getSupportActionBar().setTitle(noteWithNoteItems.getNote().getTitle());
             }
         });
         Bundle arguments = getArguments();
@@ -59,14 +59,14 @@ public class NoteFragment extends BaseFragment<FragmentNoteDescriptionBinding, N
 
     @Override
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.btn_delete_note: {
                 viewModel.deleteNote();
                 baseActivity.onBackPressed();
                 break;
             }
             case R.id.btn_share_note: {
-                String shareableNote = viewModel.getShareableNote(adapter.getCounts());
+                String shareableNote = viewModel.getShareableNote();
                 Intent intent = new Intent();
                 intent.setType("text/plain");
                 intent.setAction(Intent.ACTION_SEND);

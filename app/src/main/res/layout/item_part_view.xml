@@ -13,12 +13,12 @@
 
         <variable
                 name="partNumberValue"
-                type="String"
+                type="int"
                 />
 
         <variable
                 name="partCountValue"
-                type="String"
+                type="int"
                 />
 
     </data>
@@ -58,7 +58,7 @@
                         android:layout_gravity="center"
                         style="@style/TextStyle.Title"
                         android:textSize="@dimen/item_view_count"
-                        android:text="@{partNumberValue}"
+                        android:text="@{String.valueOf(partNumberValue)}"
                         />
 
                 <LinearLayout
@@ -123,7 +123,7 @@
                             android:gravity="center"
                             style="@style/TextStyle"
                             android:textSize="@dimen/item_view_value"
-                            android:text="@{partCountValue}"
+                            android:text="@{String.valueOf(partCountValue)}"
                             />
 
                 </LinearLayout>

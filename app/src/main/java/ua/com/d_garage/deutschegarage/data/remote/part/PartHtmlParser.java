@@ -30,7 +30,7 @@ public class PartHtmlParser {
     }
 
     public LiveData<List<PartDescriptionField>> parseDescriptionField(String body) {
-        executorService.execute(()->{
+        executorService.execute(() -> {
             if (body == null) {
                 return;
             }
@@ -49,15 +49,15 @@ public class PartHtmlParser {
         return partDescriptionFieldLiveData;
     }
 
-    public LiveData<Part> parsePart(String body, long noteId) {
-        executorService.execute(()->{
+    public LiveData<Part> parsePart(String body) {
+        executorService.execute(() -> {
             if (body == null) {
                 return;
             }
             Document document = Jsoup.parse(body);
             Elements values = document.select(VALUE_TAG);
             try {
-                Part part = new Part(0, noteId, Long.parseLong(values.get(0).text()), values.get(1).text());
+                Part part = new Part(null, Long.parseLong(values.get(0).text()), values.get(1).text());
                 partLiveData.postValue(part);
             } catch (Exception e) {
                 Log.e(TAG, "parsePart: failed to parse part values. ", e);

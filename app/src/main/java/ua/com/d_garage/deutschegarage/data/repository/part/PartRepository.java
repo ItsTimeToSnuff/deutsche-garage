@@ -1,16 +1,12 @@
 package ua.com.d_garage.deutschegarage.data.repository.part;
 
-import android.util.Log;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import ua.com.d_garage.deutschegarage.data.local.db.dao.PartDao;
 import ua.com.d_garage.deutschegarage.data.model.part.Part;
 import ua.com.d_garage.deutschegarage.data.model.part.PartDescriptionField;
-import ua.com.d_garage.deutschegarage.data.model.part.PartRequestData;
-import ua.com.d_garage.deutschegarage.data.remote.part.PartHtmlParser;
 import ua.com.d_garage.deutschegarage.data.remote.part.PartRemoteDataSource;
 
 import java.util.List;
@@ -20,60 +16,64 @@ public class PartRepository {
 
     private static final String TAG = PartRepository.class.getSimpleName();
 
-    private final PartRemoteDataSource remoteDataSource;
     private final ExecutorService executorService;
-    private final PartHtmlParser htmlParser;
+    private final PartRemoteDataSource remoteDataSource;
     private final PartDao partDao;
+    private final MutableLiveData<Part> savePartLiveData;
+    private final MutableLiveData<Long> vinDescriptionFieldLiveData;
     private final LiveData<List<PartDescriptionField>> partDescriptionLiveData;
-    private final MutableLiveData<Long> partVinLiveData;
-    private final LiveData<Part> partLiveData;
-    private final MutableLiveData<PartRequestData> partRequestDataLiveData;
+    private final MutableLiveData<Long> vinPartLiveData;
+    private final MediatorLiveData<Part> partLiveData;
 
-    public PartRepository(PartRemoteDataSource remoteDataSource, PartHtmlParser htmlParser, ExecutorService executorService, PartDao partDao) {
-        this.remoteDataSource = remoteDataSource;
-        this.htmlParser = htmlParser;
+    public PartRepository(ExecutorService executorService, PartRemoteDataSource remoteDataSource, PartDao partDao) {
         this.executorService = executorService;
+        this.remoteDataSource = remoteDataSource;
         this.partDao = partDao;
-        partVinLiveData = new MutableLiveData<>();
-        LiveData<Response> descriptionResponse = Transformations.switchMap(partVinLiveData, remoteDataSource::loadPartPage);
-        partDescriptionLiveData = Transformations.switchMap(descriptionResponse, resp -> htmlParser.parseDescriptionField(getBody(resp)));
-        partRequestDataLiveData = new MutableLiveData<>();
-        LiveData<Response> responseLiveData = Transformations.switchMap(partRequestDataLiveData, data -> remoteDataSource.loadPartPage(data.getVin()));
-        partLiveData = Transformations.switchMap(responseLiveData, response -> htmlParser.parsePart(getBody(response), partRequestDataLiveData.getValue().getNoteId()));
+        savePartLiveData = new MutableLiveData<>();
+        vinDescriptionFieldLiveData = new MutableLiveData<>();
+        partDescriptionLiveData = Transformations.switchMap(vinDescriptionFieldLiveData, this.remoteDataSource::getPartDescriptionField);
+        vinPartLiveData = new MutableLiveData<>();
+        LiveData<Part> remotePart = Transformations.switchMap(vinPartLiveData, this.remoteDataSource::getPart);
+        partLiveData = new MediatorLiveData<>();
+        partLiveData.addSource(remotePart, part -> save(partLiveData, part));
     }
 
-    public void save(Part part) {
-        executorService.execute(() -> partDao.insert(part));
+    public LiveData<Part> save(Part part) {
+        return save(savePartLiveData, part);
     }
 
-    public LiveData<List<PartDescriptionField>> getPartDescriptionLiveData() {
+    public LiveData<List<PartDescriptionField>> getPartDescriptionFields(long vin) {
+        vinDescriptionFieldLiveData.postValue(vin);
         return partDescriptionLiveData;
     }
 
-    public LiveData<Part> getPartLiveData() {
+    public LiveData<Part> getPart(long vin) {
+        executorService.execute(() -> {
+            Part part = partDao.findPartByVin(vin);
+            if (part != null) {
+                partLiveData.postValue(part);
+            } else {
+                vinPartLiveData.postValue(vin);
+            }
+        });
         return partLiveData;
     }
 
-    public void getPartDescriptionFields(long partNumber) {
-        partVinLiveData.postValue(partNumber);
-    }
-
-    public void getPart(PartRequestData data) {
-        partRequestDataLiveData.postValue(data);
-    }
-
-    private String getBody(Response response) {
-        if (response != null) {
-            ResponseBody body = response.body();
-            if (body != null) {
-                try {
-                    return body.string();
-                } catch (Exception e) {
-                    Log.e(TAG, "getPart: failed to while reading body. ", e);
-                }
+    @SuppressWarnings("unchecked")
+    private <T extends LiveData<Part>> T save(T liveData, Part part) {
+        executorService.execute(() -> {
+            if (part == null) {
+                return;
             }
-        }
-        return null;
+            Long id = partDao.insert(part);
+            Part savePart = new Part(id, part.getVin(), part.getName());
+            if (liveData instanceof MutableLiveData) {
+                ((MutableLiveData<Part>) liveData).postValue(savePart);
+            } else {
+                ((MediatorLiveData<Part>) liveData).postValue(savePart);
+            }
+        });
+        return liveData;
     }
 
 }

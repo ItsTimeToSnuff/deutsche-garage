@@ -7,24 +7,18 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import ua.com.d_garage.deutschegarage.R;
+import ua.com.d_garage.deutschegarage.data.model.note.NoteItemWithPart;
 import ua.com.d_garage.deutschegarage.data.model.part.Part;
 import ua.com.d_garage.deutschegarage.databinding.ItemPartViewBinding;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class PartsAdapter extends RecyclerView.Adapter<PartsAdapter.ViewHolder> {
 
-    private final List<Part> parts;
-    private final Map<Part, Long> counts;
+    private final List<NoteItemWithPart> noteItemWithParts;
 
-    public PartsAdapter(List<Part> parts) {
-        counts = parts
-                .stream()
-                .collect(Collectors.groupingBy(p -> p, Collectors.counting()));
-        this.parts = new ArrayList<>(counts.keySet());
+    public PartsAdapter(List<NoteItemWithPart> noteItemWithParts) {
+        this.noteItemWithParts = noteItemWithParts;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -47,19 +41,18 @@ public class PartsAdapter extends RecyclerView.Adapter<PartsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Part part = parts.get(position);
-        holder.binding.setPartNumberValue(String.valueOf(position));
-        holder.binding.setPart(part);
-        holder.binding.setPartCountValue(String.valueOf(counts.get(part)));
+        NoteItemWithPart noteItemWithPart = noteItemWithParts.get(position);
+        Part part = noteItemWithPart.getPart();
+        if (holder.binding != null) {
+            holder.binding.setPartNumberValue(position);
+            holder.binding.setPart(part);
+            holder.binding.setPartCountValue(noteItemWithPart.getQuantity());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return parts.size();
-    }
-
-    public Map<Part, Long> getCounts() {
-        return counts;
+        return noteItemWithParts.size();
     }
 
 }

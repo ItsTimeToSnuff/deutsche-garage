@@ -3,29 +3,52 @@ package ua.com.d_garage.deutschegarage.data.remote.part;
 import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.jetbrains.annotations.NotNull;
+import ua.com.d_garage.deutschegarage.data.model.part.Part;
+import ua.com.d_garage.deutschegarage.data.model.part.PartDescriptionField;
 
 import java.io.IOException;
+import java.util.List;
 
 public class PartRemoteDataSource {
 
     private static final String TAG = PartRemoteDataSource.class.getSimpleName();
 
     private final OkHttpClient client;
-   private final MutableLiveData<Response> liveData;
+    private final PartHtmlParser htmlParser;
+    private final MutableLiveData<Response> partResponseLiveData;
+    private final LiveData<Part> partLiveData;
+    private final MutableLiveData<Response> partDescriptionFieldResponseLiveData;
+    private final LiveData<List<PartDescriptionField>> partDescriptionFieldLiveData;
 
-    public PartRemoteDataSource(OkHttpClient client) {
+    public PartRemoteDataSource(OkHttpClient client, PartHtmlParser htmlParser) {
         this.client = client;
-        liveData = new MutableLiveData<>();
+        this.htmlParser = htmlParser;
+        partResponseLiveData = new MutableLiveData<>();
+        partLiveData = Transformations.switchMap(partResponseLiveData, r -> this.htmlParser.parsePart(getBody(r)));
+        partDescriptionFieldResponseLiveData = new MutableLiveData<>();
+        partDescriptionFieldLiveData = Transformations.switchMap(partDescriptionFieldResponseLiveData, r -> this.htmlParser.parseDescriptionField(getBody(r)));
     }
 
-    public LiveData<Response> loadPartPage(long partNumber) {
+    public LiveData<Part> getPart(long vin) {
+        loadPartPage(partResponseLiveData, vin);
+        return partLiveData;
+    }
+
+    public LiveData<List<PartDescriptionField>> getPartDescriptionField(long vin) {
+        loadPartPage(partDescriptionFieldResponseLiveData, vin);
+        return partDescriptionFieldLiveData;
+    }
+
+    private void loadPartPage(MutableLiveData<Response> responseLiveData, long partNumber) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme(PartApiConstant.SCHEME)
@@ -38,22 +61,35 @@ public class PartRemoteDataSource {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                liveData.postValue(null);
+                responseLiveData.postValue(null);
                 Log.e(TAG, "Failed to load part page.", e);
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    liveData.postValue(response);
+                    responseLiveData.postValue(response);
                     return;
                 }
-                liveData.postValue(null);
-                Log.e(TAG, "Response not successful. Code: " +response.code());
+                responseLiveData.postValue(null);
+                Log.e(TAG, "Response not successful. Code: " + response.code());
             }
         });
 
-        return liveData;
+    }
+
+    private String getBody(Response response) {
+        if (response != null) {
+            ResponseBody body = response.body();
+            if (body != null) {
+                try {
+                    return body.string();
+                } catch (Exception e) {
+                    Log.e(TAG, "getPart: failed to while reading body. ", e);
+                }
+            }
+        }
+        return null;
     }
 
 }
