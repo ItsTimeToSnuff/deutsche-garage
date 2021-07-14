@@ -75,17 +75,17 @@
                             android:gravity="start"
                             style="@style/TextStyle.FieldName"
                             android:textSize="@dimen/item_view_name"
-                            android:text="@string/part_vin_name"
+                            android:text="@string/part_number_name"
                             />
 
                     <TextView
-                            android:id="@+id/part_vin"
+                            android:id="@+id/id_part_number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             style="@style/TextStyle"
                             android:textSize="@dimen/item_view_value"
-                            android:text="@{String.valueOf(part.vin)}"
+                            android:text="@{String.valueOf(part.partNumber)}"
                             />
 
                     <TextView

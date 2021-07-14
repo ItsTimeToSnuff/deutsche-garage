@@ -20,10 +20,21 @@ import ua.com.d_garage.deutschegarage.data.model.part.Part;
 @Database(
         entities = {Note.class, Part.class, NoteItem.class},
         views = {NoteItemWithPart.class},
-        version = 2
+        version = 3
 )
 @TypeConverters(LocalDateTimeConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
+
+    private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(@NonNull @NotNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE `PartTemp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `partNumber` INTEGER NOT NULL, `name` TEXT)");
+            database.execSQL("INSERT INTO `PartTemp` (`id`, `partNumber`, `name`) SELECT `id`, `vin`, `name` FROM `Part`");
+            database.execSQL("DROP TABLE `Part`");
+            database.execSQL("ALTER TABLE `PartTemp` RENAME TO `Part`");
+            database.execSQL("CREATE UNIQUE INDEX `index_Part_partNumber` ON `Part` (`partNumber`)");
+        }
+    };
 
     private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
@@ -46,10 +57,10 @@ public abstract class AppDatabase extends RoomDatabase {
             // and update Part table.
             database.execSQL(
                     "CREATE TABLE `NoteItemTemp` " +
-                    "(`id` INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    " `noteId` INTEGER," +
-                    " `partId` INTEGER," +
-                    " `quantity` INTEGER NOT NULL)");
+                            "(`id` INTEGER PRIMARY KEY AUTOINCREMENT," +
+                            " `noteId` INTEGER," +
+                            " `partId` INTEGER," +
+                            " `quantity` INTEGER NOT NULL)");
             database.execSQL(
                     "INSERT INTO `NoteItemTemp` (`noteId`, `partId`, `quantity`) " +
                             "SELECT `noteId`, `id` AS `partId`, COUNT(`vin`) AS `quantity` " +
@@ -87,7 +98,7 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     };
 
-    private static final Migration[] MIGRATIONS = new Migration[]{MIGRATION_1_2};
+    private static final Migration[] MIGRATIONS = new Migration[]{MIGRATION_1_2, MIGRATION_2_3};
 
     private static volatile AppDatabase INSTANCE;
 

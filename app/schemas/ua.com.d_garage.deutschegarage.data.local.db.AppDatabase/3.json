@@ -1,0 +1,170 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "80d9d17dd1bfe8ca8938027943c66971",
+    "entities": [
+      {
+        "tableName": "Note",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT, `date` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Part",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `partNumber` INTEGER NOT NULL, `name` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "partNumber",
+            "columnName": "partNumber",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Part_partNumber",
+            "unique": true,
+            "columnNames": [
+              "partNumber"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Part_partNumber` ON `${TABLE_NAME}` (`partNumber`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "NoteItem",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `noteId` INTEGER, `partId` INTEGER, `quantity` INTEGER NOT NULL, FOREIGN KEY(`noteId`) REFERENCES `Note`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`partId`) REFERENCES `Part`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "noteId",
+            "columnName": "noteId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "partId",
+            "columnName": "partId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "quantity",
+            "columnName": "quantity",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_NoteItem_noteId",
+            "unique": false,
+            "columnNames": [
+              "noteId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_NoteItem_noteId` ON `${TABLE_NAME}` (`noteId`)"
+          },
+          {
+            "name": "index_NoteItem_partId",
+            "unique": false,
+            "columnNames": [
+              "partId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_NoteItem_partId` ON `${TABLE_NAME}` (`partId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Note",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "noteId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "Part",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "partId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [
+      {
+        "viewName": "NoteItemWithPart",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT Note.id as noteId, Part.*, NoteItem.quantity FROM NoteItem INNER JOIN Note, Part WHERE noteId = Note.id AND partId = Part.id"
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '80d9d17dd1bfe8ca8938027943c66971')"
+    ]
+  }
+}

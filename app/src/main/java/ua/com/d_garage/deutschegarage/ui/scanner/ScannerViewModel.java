@@ -43,7 +43,7 @@ public class ScannerViewModel extends BaseViewModel<ScannerNavigator> {
     private final MutableLiveData<String> noteTitle;
     private final LiveData<Note> note;
     private final MutableLiveData<Boolean> isRecording;
-    private final MutableLiveData<Long> vinPartLiveData;
+    private final MutableLiveData<Long> partNumberPartLiveData;
     private final LiveData<Part> partLiveData;
 
     private CameraService<Long> cameraService;
@@ -67,8 +67,8 @@ public class ScannerViewModel extends BaseViewModel<ScannerNavigator> {
         note = Transformations.switchMap(saveTitle, title->noteRepository.save(new Note(null, title, LocalDateTime.now())));
         isRecording = new MutableLiveData<>(prefs.getIsRecording());
         result = new MediatorLiveData<>();
-        vinPartLiveData = new MutableLiveData<>();
-        partLiveData = Transformations.switchMap(vinPartLiveData, partRepository::getPart);
+        partNumberPartLiveData = new MutableLiveData<>();
+        partLiveData = Transformations.switchMap(partNumberPartLiveData, partRepository::getPart);
     }
 
     public void initOrResumeScanner(LifecycleOwner lifecycleOwner, Preview.SurfaceProvider surfaceProvider, BarcodeSizePair sizePair) {
@@ -81,7 +81,7 @@ public class ScannerViewModel extends BaseViewModel<ScannerNavigator> {
                 long id = prefs.getNoteId();
                 if (isRec != null && id != AppPreferences.NOTE_ID_DEFAULT) {
                     if (isRec) {
-                        vinPartLiveData.setValue(barcode);
+                        partNumberPartLiveData.setValue(barcode);
                     }
                 }
             });

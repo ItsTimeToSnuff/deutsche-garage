@@ -13,25 +13,31 @@ to register the goods when a new product arrives at the warehouse.
 
 ## Release notes
 
+- ### **_v1.3.1:_**
+  - changed spare parts collecting information from vin to part number
+  - changed field in Part entity from vin to partNumber
+  - added db migration from v2 to v3
+  - added CRLF fix for the shared note text description which sharing to Windows
+
 - ### **_v1.3:_**
-  - add ability to choose the quantity of spare parts at one scanning parcel
+  - added ability to choose the quantity of spare parts at one scanning parcel
   - restructured database, and relationship between tables:
     - Part table now containing only unique entities by vin
     - Note now relied on list of NoteItems
     - add NoteItem entity which contain foreign keys to Note and Part, and a quantity of Part in one Note
-  - refactor and improve repositories logic
-  - add db migration from v1 to v2
+  - refactored and improved repositories logic
+  - added db migration from v1 to v2
 
 - ### **_v1.2:_**
-  - refactoring design of application
+  - refactored design of application
   - created database
   - created a recording of accounting for the arrival of spare parts to the warehouse
   - created an activity where records can be viewed, shared, and deleted
   - fix, and some improvement of project code from previous versions
 
 - ### **_v1.1:_**
-  - replace parsing html part description and showing results by redirecting user direct to website according to customer requirement
-  - refactoring code according to changes and delete useless files
+  - replaced parsing html part description and showing results by redirecting user direct to website according to customer requirement
+  - refactored code according to changes and delete useless files
 
 - ### **_v1.0:_**
   - created first version of application

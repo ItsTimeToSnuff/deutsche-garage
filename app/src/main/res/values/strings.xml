@@ -14,8 +14,8 @@
     <string name="note_default_title">Test note title.......</string>
     <string name="notes_fragment_title">Записи</string>
     <string name="part_default_name">Engine</string>
-    <string name="part_default_vin">12347564235</string>
-    <string name="part_vin_name">VIN:</string>
+    <string name="part_number_default">12347564235</string>
+    <string name="part_number_name">Номер детали:</string>
     <string name="part_name">Название:</string>
     <string name="part_count">Количество:</string>
     <string name="part_default_count">4</string>

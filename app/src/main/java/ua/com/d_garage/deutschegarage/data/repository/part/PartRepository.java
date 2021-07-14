@@ -20,9 +20,9 @@ public class PartRepository {
     private final PartRemoteDataSource remoteDataSource;
     private final PartDao partDao;
     private final MutableLiveData<Part> savePartLiveData;
-    private final MutableLiveData<Long> vinDescriptionFieldLiveData;
+    private final MutableLiveData<Long> partNumberDescriptionFieldLiveData;
     private final LiveData<List<PartDescriptionField>> partDescriptionLiveData;
-    private final MutableLiveData<Long> vinPartLiveData;
+    private final MutableLiveData<Long> partNumberPartLiveData;
     private final MediatorLiveData<Part> partLiveData;
 
     public PartRepository(ExecutorService executorService, PartRemoteDataSource remoteDataSource, PartDao partDao) {
@@ -30,10 +30,10 @@ public class PartRepository {
         this.remoteDataSource = remoteDataSource;
         this.partDao = partDao;
         savePartLiveData = new MutableLiveData<>();
-        vinDescriptionFieldLiveData = new MutableLiveData<>();
-        partDescriptionLiveData = Transformations.switchMap(vinDescriptionFieldLiveData, this.remoteDataSource::getPartDescriptionField);
-        vinPartLiveData = new MutableLiveData<>();
-        LiveData<Part> remotePart = Transformations.switchMap(vinPartLiveData, this.remoteDataSource::getPart);
+        partNumberDescriptionFieldLiveData = new MutableLiveData<>();
+        partDescriptionLiveData = Transformations.switchMap(partNumberDescriptionFieldLiveData, this.remoteDataSource::getPartDescriptionField);
+        partNumberPartLiveData = new MutableLiveData<>();
+        LiveData<Part> remotePart = Transformations.switchMap(partNumberPartLiveData, this.remoteDataSource::getPart);
         partLiveData = new MediatorLiveData<>();
         partLiveData.addSource(remotePart, part -> save(partLiveData, part));
     }
@@ -42,18 +42,18 @@ public class PartRepository {
         return save(savePartLiveData, part);
     }
 
-    public LiveData<List<PartDescriptionField>> getPartDescriptionFields(long vin) {
-        vinDescriptionFieldLiveData.postValue(vin);
+    public LiveData<List<PartDescriptionField>> getPartDescriptionFields(long partNumber) {
+        partNumberDescriptionFieldLiveData.postValue(partNumber);
         return partDescriptionLiveData;
     }
 
-    public LiveData<Part> getPart(long vin) {
+    public LiveData<Part> getPart(long partNumber) {
         executorService.execute(() -> {
-            Part part = partDao.findPartByVin(vin);
+            Part part = partDao.findPartByPartNumber(partNumber);
             if (part != null) {
                 partLiveData.postValue(part);
             } else {
-                vinPartLiveData.postValue(vin);
+                partNumberPartLiveData.postValue(partNumber);
             }
         });
         return partLiveData;
@@ -66,7 +66,7 @@ public class PartRepository {
                 return;
             }
             Long id = partDao.insert(part);
-            Part savePart = new Part(id, part.getVin(), part.getName());
+            Part savePart = new Part(id, part.getPartNumber(), part.getName());
             if (liveData instanceof MutableLiveData) {
                 ((MutableLiveData<Part>) liveData).postValue(savePart);
             } else {

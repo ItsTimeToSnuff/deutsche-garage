@@ -13,7 +13,7 @@ public interface PartDao {
     Long insert(Part part);
 
     @Transaction
-    @Query("SELECT * FROM Part WHERE vin = :vin")
-    Part findPartByVin(long vin);
+    @Query("SELECT * FROM Part WHERE partNumber = :partNumber")
+    Part findPartByPartNumber(long partNumber);
 
 }

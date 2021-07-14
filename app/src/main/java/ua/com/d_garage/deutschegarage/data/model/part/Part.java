@@ -7,19 +7,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-@Entity(indices = {@Index(value = {"vin"}, unique = true)})
+@Entity(indices = {@Index(value = {"partNumber"}, unique = true)})
 public class Part {
 
     @PrimaryKey(autoGenerate = true)
     private final Long id;
 
-    private final long vin;
+    private final long partNumber;
 
     private final String name;
 
-    public Part(Long id, long vin, String name) {
+    public Part(Long id, long partNumber, String name) {
         this.id = id;
-        this.vin = vin;
+        this.partNumber = partNumber;
         this.name = name;
     }
 
@@ -27,8 +27,8 @@ public class Part {
         return id;
     }
 
-    public long getVin() {
-        return vin;
+    public long getPartNumber() {
+        return partNumber;
     }
 
     public String getName() {
@@ -40,12 +40,12 @@ public class Part {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Part part = (Part) o;
-        return vin == part.vin && Objects.equals(id, part.id);
+        return partNumber == part.partNumber && Objects.equals(id, part.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, vin);
+        return Objects.hash(id, partNumber);
     }
 
     @NotNull
@@ -53,7 +53,7 @@ public class Part {
     public String toString() {
         return "Part{" +
                 "id=" + id +
-                ", vin=" + vin +
+                ", partNumber=" + partNumber +
                 ", name='" + name + '\'' +
                 '}';
     }

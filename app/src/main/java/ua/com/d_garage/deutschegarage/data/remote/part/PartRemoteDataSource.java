@@ -38,13 +38,13 @@ public class PartRemoteDataSource {
         partDescriptionFieldLiveData = Transformations.switchMap(partDescriptionFieldResponseLiveData, r -> this.htmlParser.parseDescriptionField(getBody(r)));
     }
 
-    public LiveData<Part> getPart(long vin) {
-        loadPartPage(partResponseLiveData, vin);
+    public LiveData<Part> getPart(long partNumber) {
+        loadPartPage(partResponseLiveData, partNumber);
         return partLiveData;
     }
 
-    public LiveData<List<PartDescriptionField>> getPartDescriptionField(long vin) {
-        loadPartPage(partDescriptionFieldResponseLiveData, vin);
+    public LiveData<List<PartDescriptionField>> getPartDescriptionField(long partNumber) {
+        loadPartPage(partDescriptionFieldResponseLiveData, partNumber);
         return partDescriptionFieldLiveData;
     }
 
